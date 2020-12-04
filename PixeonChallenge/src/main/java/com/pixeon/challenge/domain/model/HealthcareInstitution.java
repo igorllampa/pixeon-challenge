@@ -73,12 +73,8 @@ public class HealthcareInstitution {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
-	
+	}	
 	
 	//@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)		
-	//private List<Exam> exams =  new ArrayList<>();
-	
-	
+	//private List<Exam> exams =  new ArrayList<>();	
 }
