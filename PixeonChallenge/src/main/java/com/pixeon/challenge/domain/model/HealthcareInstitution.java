@@ -88,6 +88,9 @@ public class HealthcareInstitution {
 		return true;
 	}	
 	
+	public void chargePixeonCoin() {
+		this.totalPixeonCoin--;
+	}
 	//@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)		
 	//private List<Exam> exams =  new ArrayList<>();	
 }
