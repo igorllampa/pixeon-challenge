@@ -37,11 +37,11 @@ public class ExamController {
 		return examService.register(exam);
 	}
 	
-	@GetMapping("/list/{id}")
+	@GetMapping("/find/{id}")
 	public Optional<Exam> findExam(@PathVariable Long id) {
 		return examRepository.findById(id);
 	}
-	
+		
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Exam> update(@Valid @PathVariable Long id, @RequestBody Exam exam){
 		if(!examRepository.existsById(id)) {
