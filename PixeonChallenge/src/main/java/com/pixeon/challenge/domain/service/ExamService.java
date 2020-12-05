@@ -15,4 +15,8 @@ public class ExamService {
 	public Exam register(Exam exam) {
 		return examRepository.save(exam);
 	}
+	
+	public void remove(Long id) {
+		examRepository.deleteById(id);
+	}
 }
