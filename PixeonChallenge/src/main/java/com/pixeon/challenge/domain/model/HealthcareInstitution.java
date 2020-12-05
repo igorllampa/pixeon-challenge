@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,9 @@ public class HealthcareInstitution {
 	
 	@Size(max = 14)
 	private String cnpj;
+	
+	@Column(name = "total_pixeon_coin")
+	private Integer totalPixeonCoin;	
 
 	public Long getId() {
 		return id;
@@ -48,6 +52,15 @@ public class HealthcareInstitution {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+
+	
+	public Integer getTotalPixeonCoin() {
+		return totalPixeonCoin;
+	}
+
+	public void setTotalPixeonCoin(Integer totalPixeonCoin) {
+		this.totalPixeonCoin = totalPixeonCoin;
 	}
 
 	@Override
