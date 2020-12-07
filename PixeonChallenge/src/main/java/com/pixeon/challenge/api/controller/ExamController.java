@@ -1,5 +1,6 @@
 package com.pixeon.challenge.api.controller;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -18,8 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pixeon.challenge.domain.model.Exam;
+import com.pixeon.challenge.domain.model.HealthcareInstitution;
 import com.pixeon.challenge.domain.repository.ExamRepository;
+import com.pixeon.challenge.domain.repository.HealthcareInstitutionRepository;
 import com.pixeon.challenge.domain.service.ExamService;
+import com.pixeon.challenge.domain.service.HealthcareInstitutionService;
 
 @RestController
 @RequestMapping("exam")
@@ -27,6 +31,11 @@ public class ExamController {
 
 	@Autowired
 	private ExamRepository examRepository;
+	
+	@Autowired
+	private HealthcareInstitutionRepository healthcareInstitutionRepository;
+	
+	private HealthcareInstitutionService healthcareInstitutionService;
 	
 	@Autowired
 	private ExamService examService;
@@ -38,7 +47,29 @@ public class ExamController {
 	}
 	
 	@GetMapping("/find/{id}")
-	public Optional<Exam> findExam(@PathVariable Long id) {
+	public Optional<Exam> findExam(@PathVariable Long id) {		
+		
+		
+		
+		Exam exam = examRepository.findById(id).get();			
+		System.out.println(exam.getPatientName());
+		
+		//Verify first acess to exam
+		if(exam.getFirstAcess() == null) {
+			System.out.println("É o primeiro acesso!");
+			System.out.println("Deve descontar a PixeonCoin!!!!");
+			
+			//Charge a Pixeon Coin
+			HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();
+			healthcareInstitution.chargePixeonCoin();			
+			healthcareInstitutionRepository.save(healthcareInstitution);
+			
+			//Fill First Acess with the timestamp			
+			exam.setFirstAcess(LocalDateTime.now());
+			examRepository.save(exam);
+		}
+													
+		
 		return examRepository.findById(id);
 	}
 		

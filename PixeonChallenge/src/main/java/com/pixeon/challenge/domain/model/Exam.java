@@ -1,5 +1,7 @@
 package com.pixeon.challenge.domain.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,6 +47,9 @@ public class Exam {
 	@Size(max = 250)
 	private String procedureName;
 
+	@Column(name = "first_acess")
+	private LocalDateTime firstAcess;
+	
 	public Long getId() {
 		return id;
 	}
@@ -107,6 +112,15 @@ public class Exam {
 
 	public void setProcedureName(String procedureName) {
 		this.procedureName = procedureName;
+	}
+
+	
+	public LocalDateTime getFirstAcess() {
+		return firstAcess;
+	}
+
+	public void setFirstAcess(LocalDateTime firstAcess) {
+		this.firstAcess = firstAcess;
 	}
 
 	@Override

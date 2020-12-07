@@ -1,0 +1,1 @@
+alter table exam add column first_acess datetime;
