@@ -46,19 +46,20 @@ public class ExamController {
 		return examService.register(exam);
 	}
 	
-	@GetMapping("/find/{id}")
-	public Optional<Exam> findExam(@PathVariable Long id) {		
+	@GetMapping("/find/{idHealthcareInst}/{id}")
+	public ResponseEntity<Exam> findExam(@PathVariable Long idHealthcareInst, @PathVariable Long id) {
 		
+					
+		Exam exam = examRepository.findById(id).get();		
 		
+		//Verify if the Exam HealthcareInstitution is the same of the requester
+		if(exam.getHealthcareInstitution().getId() != idHealthcareInst) {
+			return ResponseEntity.noContent().build();
+		}
 		
-		Exam exam = examRepository.findById(id).get();			
-		System.out.println(exam.getPatientName());
-		
-		//Verify first acess to exam
+		//Verify first access to exam
 		if(exam.getFirstAcess() == null) {
-			System.out.println("É o primeiro acesso!");
-			System.out.println("Deve descontar a PixeonCoin!!!!");
-			
+						
 			//Charge a Pixeon Coin
 			HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();
 			healthcareInstitution.chargePixeonCoin();			
@@ -70,7 +71,7 @@ public class ExamController {
 		}
 													
 		
-		return examRepository.findById(id);
+		return ResponseEntity.ok(exam);
 	}
 		
 	@PutMapping("/update/{id}")
