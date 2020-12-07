@@ -58,12 +58,9 @@ public class ExamController {
 	
 	@GetMapping("/find/{idHealthcareInst}/{id}")
 	public ResponseEntity<Exam> findExam(@PathVariable Long idHealthcareInst, @PathVariable Long id) {
-		
-					
+							
 		Exam exam = examRepository.findById(id).get();
-		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();
-		
-		
+		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();		
 		
 		//Verify if the Exam HealthcareInstitution is the same of the requester
 		if(exam.getHealthcareInstitution().getId() != idHealthcareInst) {
