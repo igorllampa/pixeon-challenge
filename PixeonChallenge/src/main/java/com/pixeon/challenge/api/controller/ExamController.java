@@ -42,15 +42,28 @@ public class ExamController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST,
 			        produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Exam register(@RequestBody Exam exam) {
-		return examService.register(exam);
+	public @ResponseBody ResponseEntity<Exam> register(@RequestBody Exam exam) {
+				
+		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();
+		
+		//Verify if the Healthcare Instituion have available Pixeon Coins to register a new exam
+		if(healthcareInstitution.getTotalPixeonCoin() > 0) {		
+			return ResponseEntity.ok(examService.register(exam));
+		}else {
+			return ResponseEntity.noContent().build();
+		}
+		
+		
 	}
 	
 	@GetMapping("/find/{idHealthcareInst}/{id}")
 	public ResponseEntity<Exam> findExam(@PathVariable Long idHealthcareInst, @PathVariable Long id) {
 		
 					
-		Exam exam = examRepository.findById(id).get();		
+		Exam exam = examRepository.findById(id).get();
+		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();
+		
+		
 		
 		//Verify if the Exam HealthcareInstitution is the same of the requester
 		if(exam.getHealthcareInstitution().getId() != idHealthcareInst) {
@@ -59,15 +72,19 @@ public class ExamController {
 		
 		//Verify first access to exam
 		if(exam.getFirstAcess() == null) {
-						
-			//Charge a Pixeon Coin
-			HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();
-			healthcareInstitution.chargePixeonCoin();			
-			healthcareInstitutionRepository.save(healthcareInstitution);
-			
-			//Fill First Acess with the timestamp			
-			exam.setFirstAcess(LocalDateTime.now());
-			examRepository.save(exam);
+				
+			//Verify if the Healthcare Instituion have available Pixeon Coins 
+			if(healthcareInstitution.getTotalPixeonCoin() > 0) {
+				//Charge a Pixeon Coin			
+				healthcareInstitution.chargePixeonCoin();			
+				healthcareInstitutionRepository.save(healthcareInstitution);
+				
+				//Fill First Acess with the timestamp			
+				exam.setFirstAcess(LocalDateTime.now());
+				examRepository.save(exam);
+			}else {
+				return ResponseEntity.noContent().build();
+			}
 		}
 													
 		
