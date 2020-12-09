@@ -52,7 +52,7 @@ JSON:\
 
 ## 4. Exam Remove
 Method: DELETE\
-URL: //HOST/exam/remove/idExam (Substitute idExam by the exacly id of the Exam that will be removed) \
+URL: //HOST/exam/remove/idExam (Substitute idExam by the exacly id of the Exam that will be removed) 
 
 
 ## 5. Find Exam
@@ -62,6 +62,6 @@ URL: //HOST/exam/find/idHealthcareInstitution/idExam (Substitue idHealthcareInst
      
 
 
-#### P.S.: The database tables created are availabe inside the project, specifically in: ../resources/db/migration/*.sql. \
+#### P.S.: The database tables created are availabe inside the project, specifically in: ../resources/db/migration/*.sql. 
 #### When the project is executed for the first time, the database will be automatically created by Flyway.
 
