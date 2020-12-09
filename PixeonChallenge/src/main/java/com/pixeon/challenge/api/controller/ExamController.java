@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pixeon.challenge.api.response.Message;
 import com.pixeon.challenge.domain.model.Exam;
 import com.pixeon.challenge.domain.model.HealthcareInstitution;
 import com.pixeon.challenge.domain.repository.ExamRepository;
@@ -43,7 +44,7 @@ public class ExamController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST,
 			        produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Exam> register(@RequestBody Exam exam) {
+	public @ResponseBody ResponseEntity<Object> register(@RequestBody Exam exam) {
 				
 		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();				
 		
@@ -51,20 +52,25 @@ public class ExamController {
 		if(healthcareInstitution.isPixeonCoinAvailable()) {		
 			return ResponseEntity.ok(examService.register(exam));
 		}else {
-			return ResponseEntity.noContent().build();
+			Message msg = new Message();
+			msg.setMessage("Not enough PixeonCoin Available to register a new exam. Please, contact us."); 
+			return ResponseEntity.ok(msg);
 		}
 			
 	}
 	
 	@GetMapping("/find/{idHealthcareInst}/{id}")
-	public ResponseEntity<Exam> findExam(@PathVariable Long idHealthcareInst, @PathVariable Long id) {
-							
+	public ResponseEntity<Object> findExam(@PathVariable Long idHealthcareInst, @PathVariable Long id) {
+		
+		
 		Exam exam = examRepository.findById(id).get();
 		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();		
 		
 		//Verify if the Exam HealthcareInstitution is the same of the requester
-		if(exam.getHealthcareInstitution().getId() != idHealthcareInst) {
-			return ResponseEntity.noContent().build();
+		if(exam.getHealthcareInstitution().getId() != idHealthcareInst) {						
+			Message msg = new Message();
+			msg.setMessage("The requested exam is not allowed to be retrieved. It belongs to another Healthcare Institution."); 
+			return ResponseEntity.ok(msg);
 		}
 		
 		//Verify first access to exam
@@ -80,7 +86,9 @@ public class ExamController {
 				examService.updateFirstAccessToExam(exam);
 				
 			}else {
-				return ResponseEntity.noContent().build();
+				Message msg = new Message();
+				msg.setMessage("Not enough PixeonCoin Available to register a new exam. Please, contact us."); 
+				return ResponseEntity.ok(msg);
 			}
 		}
 													
