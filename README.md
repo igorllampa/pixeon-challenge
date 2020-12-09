@@ -5,7 +5,7 @@
 -Web Server: TomCat\
 -IDE:Spring Tool Suite 4/Eclipse 
 
-# Tests with de API
+# Tests with the API
 
 ## 1. Healthcare Institution Register:
 Method: POST\
