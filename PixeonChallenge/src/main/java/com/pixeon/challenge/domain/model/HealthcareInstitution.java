@@ -63,6 +63,17 @@ public class HealthcareInstitution {
 		this.totalPixeonCoin = totalPixeonCoin;
 	}
 
+	public boolean isPixeonCoinAvailable() {
+		
+		
+		if(this.getTotalPixeonCoin() != null && this.getTotalPixeonCoin() > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

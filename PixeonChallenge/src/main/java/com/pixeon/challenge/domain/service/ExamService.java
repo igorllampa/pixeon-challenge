@@ -1,5 +1,6 @@
 package com.pixeon.challenge.domain.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,12 @@ public class ExamService {
 	
 	public void remove(Long id) {
 		examRepository.deleteById(id);
+	}
+	
+	public void updateFirstAccessToExam(Exam exam) {
+		
+		exam.setFirstAcess(LocalDateTime.now());
+		
+		examRepository.save(exam);			
 	}
 }

@@ -35,6 +35,7 @@ public class ExamController {
 	@Autowired
 	private HealthcareInstitutionRepository healthcareInstitutionRepository;
 	
+	@Autowired
 	private HealthcareInstitutionService healthcareInstitutionService;
 	
 	@Autowired
@@ -44,16 +45,15 @@ public class ExamController {
 			        produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Exam> register(@RequestBody Exam exam) {
 				
-		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();
+		HealthcareInstitution healthcareInstitution = healthcareInstitutionRepository.findById(exam.getHealthcareInstitution().getId()).get();				
 		
 		//Verify if the Healthcare Instituion have available Pixeon Coins to register a new exam
-		if(healthcareInstitution.getTotalPixeonCoin() > 0) {		
+		if(healthcareInstitution.isPixeonCoinAvailable()) {		
 			return ResponseEntity.ok(examService.register(exam));
 		}else {
 			return ResponseEntity.noContent().build();
 		}
-		
-		
+			
 	}
 	
 	@GetMapping("/find/{idHealthcareInst}/{id}")
@@ -71,14 +71,14 @@ public class ExamController {
 		if(exam.getFirstAcess() == null) {
 				
 			//Verify if the Healthcare Instituion have available Pixeon Coins 
-			if(healthcareInstitution.getTotalPixeonCoin() > 0) {
+			if(healthcareInstitution.isPixeonCoinAvailable()) {
+				
 				//Charge a Pixeon Coin			
-				healthcareInstitution.chargePixeonCoin();			
-				healthcareInstitutionRepository.save(healthcareInstitution);
+				healthcareInstitutionService.chargePixeonCoin(healthcareInstitution);
 				
 				//Fill First Acess with the timestamp			
-				exam.setFirstAcess(LocalDateTime.now());
-				examRepository.save(exam);
+				examService.updateFirstAccessToExam(exam);
+				
 			}else {
 				return ResponseEntity.noContent().build();
 			}

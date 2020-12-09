@@ -22,5 +22,9 @@ public class HealthcareInstitutionService {
 	}
 	
 	
+	public void chargePixeonCoin(HealthcareInstitution healthcareInstitution){
+		healthcareInstitution.chargePixeonCoin();			
+		healthcareInstitutionRepository.save(healthcareInstitution);
+	}
 	
 }
