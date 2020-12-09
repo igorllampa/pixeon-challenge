@@ -13,40 +13,40 @@ URL: //HOST/healthcareinstitution/register\
 JSON:\
               {   "name" : "Hostipal Base of California",\
                   "cnpj": "29102078000107"\
-              } \
+              } 
 
 ## 2. Exam Register
 Method: POST\
 URL: //HOST/exam/register \
 JSON: \
-      { \   
+      {    
           "patientName" : "AnonYXYZW123456",\
           "patientAge": "40",\
           "healthcareInstitution": {\
               "id": 4\
-          }, \
+          }, 
           "patientGender": "N",\
           "physicianName": "Dr. Octopus",\
           "physicianCrm": "111111-11",\
           "procedureName": "Exam @"\
-      } \
+      } 
 
 
 ## 3. Exam Update
 Method: PUT\
 URL: //HOST/exam/update/idExam (Substitute idExam by the exacly id of the Exam that will be updated) \
 JSON:\
-        {   \
+        {   
             "patientName" : "Patient Updated - X", \
             "patientAge": "20",\
             "healthcareInstitution": { \
                 "id": 4\
-            }, \
+            }, 
             "patientGender": "F",\
             "physicianName": "Dr. Test Y",\
             "physicianCrm": "0000000000000",\
             "procedureName": "Exam Hemoglobin"\
-        } \
+        } 
         
         
 
