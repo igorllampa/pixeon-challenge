@@ -116,6 +116,6 @@ public class ExamController {
 		
 		examService.remove(id);
 		
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(null);
 	}
 }
